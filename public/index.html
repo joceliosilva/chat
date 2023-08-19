@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chat Estilizado</title>
+  <title>JS CHAT</title>
   <style>
      body {
       font-family: Arial, sans-serif;
@@ -116,9 +116,12 @@
     <button onclick="sendMessage()">Enviar</button>
   </div>
 
+
   <script>
   const inputUser = document.getElementById('inputUser');
+  const inputMessage = document.getElementById('inputMessage');
   const nomeUsuario = "CHAT";
+  let mensagemEnviada = false; // Variável para rastrear se uma mensagem foi enviada
 
   const socket = new WebSocket('wss://chat-kakb.onrender.com');
   document.querySelector("#chat-header h1").textContent = nomeUsuario;
@@ -129,8 +132,6 @@
   };
 
   function sendMessage() {
-    const inputUser = document.getElementById('inputUser');
-    const inputMessage = document.getElementById('inputMessage');
     const user = inputUser.value;
     const message = inputMessage.value;
 
@@ -138,6 +139,12 @@
       const data = { user: user, text: message };
       socket.send(JSON.stringify(data));
       inputMessage.value = '';
+      
+      // Bloqueia o campo de entrada do usuário após o envio da primeira mensagem
+      if (!mensagemEnviada) {
+        inputUser.disabled = true;
+        mensagemEnviada = true;
+      }
     }
   }
 
@@ -145,7 +152,7 @@
     const messagesDiv = document.getElementById('messages');
     const messageClass = user === nomeUsuario ? 'other-user-message' : 'user-message';
     messagesDiv.innerHTML += `<p class="${messageClass}"><strong>${user}:</strong> ${message}</p>`;
-    messagesDiv.innerHTML += '<div class="separator"></div>'; // Adicione a linha separadora
+    messagesDiv.innerHTML += '<div class="separator"></div>';
   }
   </script>
 </body>
