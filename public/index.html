@@ -105,10 +105,11 @@
     <button onclick="sendMessage()">Enviar</button>
   </div>
 
-
   <script>
+  const inputUser = document.getElementById('inputUser');
+  const nomeUsuario = "CHAT";
 
- const socket = new WebSocket('wss://chat-kakb.onrender.com');
+  const socket = new WebSocket('wss://chat-kakb.onrender.com');
   document.querySelector("#chat-header h1").textContent = nomeUsuario;
 
   socket.onmessage = (event) => {
@@ -130,12 +131,11 @@
   }
 
   function addMessageToChat(user, message) {
-  const messagesDiv = document.getElementById('messages');
-  const messageClass = user === nomeUsuario ? 'other-user-message' : 'user-message';
-  messagesDiv.innerHTML += `<p class="${messageClass}"><strong>${user}:</strong> ${message}</p>`;
-  messagesDiv.innerHTML += '<div class="separator"></div>'; // Adicione a linha separadora
-}
-
-</script>
+    const messagesDiv = document.getElementById('messages');
+    const messageClass = user === nomeUsuario ? 'other-user-message' : 'user-message';
+    messagesDiv.innerHTML += `<p class="${messageClass}"><strong>${user}:</strong> ${message}</p>`;
+    messagesDiv.innerHTML += '<div class="separator"></div>'; // Adicione a linha separadora
+  }
+  </script>
 </body>
 </html>
