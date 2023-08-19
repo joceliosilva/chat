@@ -86,7 +86,9 @@
   </div>
 
   <script>
-  const socket = new WebSocket('ws://https://chat-kakb.onrender.com');
+// Certifique-se de que a URL comece com wss:// em vez de ws://
+const socket = new WebSocket('wss://chat-kakb.onrender.com');
+
 
 socket.onmessage = (event) => {
   const messagesDiv = document.getElementById('messages');
