@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JS CHAT</title>
+  <title>Chat Estilizado</title>
   <style>
-    body {
+     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
@@ -84,45 +84,60 @@
 #chat-header h1 {
     margin: 0;
 }
-
+    /* ... (o estilo do chat permanece o mesmo) ... */
+    .separator {
+      border-top: 1px solid #ccc;
+      margin: 10px 0;
+      clear: both;
+    }
+  </style>
 </head>
 <body>
-div id="chat-header">
+<div id="chat-header">
     <h1>CHAT</h1>
 </div>
 
   <div id="chat">
     <div id="messages"></div>
-    
- <input type="text" id="inputUser" placeholder="Seu nome de usuário...">
-<input type="text" id="inputMessage" placeholder="Digite uma mensagem...">
-<button onclick="sendMessage()">Enviar</button>
+
+    <input type="text" id="inputUser" placeholder="Seu nome de usuário...">
+    <input type="text" id="inputMessage" placeholder="Digite uma mensagem...">
+    <button onclick="sendMessage()">Enviar</button>
   </div>
 
   <script>
-// Certifique-se de que a URL comece com wss:// em vez de ws://
-const socket = new WebSocket('wss://chat-kakb.onrender.com');
+  const inputUser = document.getElementById('inputUser');
+  const nomeUsuario = "CHAT";
+  <script>
 
+ const socket = new WebSocket('wss://chat-kakb.onrender.com');
+  document.querySelector("#chat-header h1").textContent = nomeUsuario;
 
-socket.onmessage = (event) => {
-  const messagesDiv = document.getElementById('messages');
-  const data = JSON.parse(event.data);
-  messagesDiv.innerHTML += `<p><strong>${data.user}:</strong> ${data.text}</p>`;
-};
-
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    addMessageToChat(data.user, data.text);
+  };
 
   function sendMessage() {
-  const inputUser = document.getElementById('inputUser');
-  const inputMessage = document.getElementById('inputMessage');
-  const user = inputUser.value;
-  const message = inputMessage.value;
+    const inputUser = document.getElementById('inputUser');
+    const inputMessage = document.getElementById('inputMessage');
+    const user = inputUser.value;
+    const message = inputMessage.value;
 
-  if (user && message) {
-    const data = { user: user, text: message };
-    socket.send(JSON.stringify(data));
-    inputMessage.value = '';
+    if (user && message) {
+      const data = { user: user, text: message };
+      socket.send(JSON.stringify(data));
+      inputMessage.value = '';
+    }
   }
+
+  function addMessageToChat(user, message) {
+  const messagesDiv = document.getElementById('messages');
+  const messageClass = user === nomeUsuario ? 'other-user-message' : 'user-message';
+  messagesDiv.innerHTML += `<p class="${messageClass}"><strong>${user}:</strong> ${message}</p>`;
+  messagesDiv.innerHTML += '<div class="separator"></div>'; // Adicione a linha separadora
 }
+
 </script>
 </body>
 </html>
